@@ -78,6 +78,7 @@ bool DataLoader::load_labels(const std::string& filepath){
         file.read((char *)&label, 1);
         labels[i] = label;
     }
+    return true;
 }
 
 // 设置读取位置（语义等同于 reset）
@@ -97,17 +98,18 @@ void DataLoader::reset(int start_index)
     }
 }
 
-bool DataLoader::next_batch(int batch_size,float *image_batch,int* label_batch){
+bool DataLoader::next_batch(int batch_size, float *image_batch, int *label_batch)
+{
     if (current_index >= num_images)
         return false;
     int remaining = num_images - current_index;
     int actual_batch = (batch_size < remaining) ? batch_size : remaining;
-    int image_size =rows*cols;
-    for(int i =0;i<actual_batch;++i){
-        std::memcpy(&image_batch[i*image_size],&images[(current_index+i)*image_size],sizeof(float)*image_size);
-        label_batch[i]=labels[current_index+i];
+    int image_size = rows * cols;
+    for (int i = 0; i < actual_batch; ++i)
+    {
+        std::memcpy(&image_batch[i * image_size], &images[(current_index + i) * image_size], sizeof(float) * image_size);
+        label_batch[i] = labels[current_index + i];
     }
-    current_index +=actual_batch;
+    current_index += actual_batch;
     return true;
-
 }

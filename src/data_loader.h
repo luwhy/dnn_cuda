@@ -38,4 +38,4 @@ private:
     int rows;
     int cols;
     int current_index;
-}
+};
